@@ -11,7 +11,7 @@ class SshThru:
         home = expanduser("~")
         self.configFile=home+"/.sshthru"
         self.loadConfigs()
-        self.proxySSHcommand = "ssh -o StrictHostKeyChecking=no -l ec2-user -i  %s %s -o ProxyCommand=\"ssh -i %s   -v -W %%h:%%p ec2-user@%s\""
+        self.proxySSHcommand = "ssh -o StrictHostKeyChecking=no -l ec2-user -i  %s %s -o ProxyCommand=\"ssh -i %s -W %%h:%%p ec2-user@%s\""
 
 
     def loadConfigs(self):

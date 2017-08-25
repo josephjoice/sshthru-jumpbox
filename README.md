@@ -7,7 +7,7 @@ This script assumes that the aws account which is configured in `~/.aws/credenti
 
 **Usage**
 
-You can use the script to login to an instance in any availability group by giving some uniquely identifiable portion of that ASG name.
+You can use the script to login to an instance in any autoscaling group by giving some uniquely identifiable portion of that ASG name.
 First time when the script is run, a config file is created `~/.sshthru` which will have the key and bastion ip. If the file is not found the key file location will be requested again.
 The bastion Ip is found out looking for a ASG which has `bastion` in its name. You can manually update it in the config file as well.
 ```

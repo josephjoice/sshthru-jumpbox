@@ -4,13 +4,17 @@ import subprocess
 
 
 
-sshThru = SshThru()
-instances = sshThru.getMatchingASGInstances(sys.argv[1])
+file = sys.argv[2]
+sshThru = SshThru(file)
+instances = sshThru.getMatchingASGInstances(sys.argv[1]) 
 instances = sshThru.getInstanceIP(instances)
 index=1;
 for instance in instances:
-    print(str(index)+" "+instance['PrivateIpAddress']+" "+instance['State']['Name']+" "+str(instance['LaunchTime']))
-    index =  index+1
+    try:
+        print(str(index)+" "+instance['PrivateIpAddress']+" "+instance['State']['Name']+" "+str(instance['LaunchTime']))
+        index =  index+1
+    except:
+        print "",
 if(len(instances) == 1):
     userSelection = 0
 else:

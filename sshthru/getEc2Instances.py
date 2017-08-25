@@ -4,14 +4,16 @@ import json
 import sys
 import subprocess
 import configparser
+import os
 from os.path import expanduser
 
 class SshThru:
-    def __init__(self):
+    def __init__(self,file):
+        os.environ['AWS_PROFILE'] = file
         home = expanduser("~")
-        self.configFile=home+"/.sshthru"
+        self.configFile=home+"/."+file
         self.loadConfigs()
-        self.proxySSHcommand = "ssh -o StrictHostKeyChecking=no -l ec2-user -i  %s %s -o ProxyCommand=\"ssh -i %s -W %%h:%%p ec2-user@%s\""
+        self.proxySSHcommand = "ssh -o StrictHostKeyChecking=no -l jjoice -i  %s %s -o ProxyCommand=\"ssh -o StrictHostKeyChecking=no -i %s -W %%h:%%p jjoice@%s\""
 
 
     def loadConfigs(self):

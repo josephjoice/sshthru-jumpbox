@@ -1,13 +1,12 @@
-from sshthru.getEc2Instances import SshThru
+from sshthru.api import SshThru
 import sys
 import subprocess
-
-
+import getpass
 
 def main():
-    file = sys.argv[2]
+    file = sys.argv[3]
     sshThru = SshThru(file)
-    instances = sshThru.getMatchingASGInstances(sys.argv[1]) 
+    instances = sshThru.getMatchingASGInstances(sys.argv[2]) 
     instances = sshThru.getInstanceIP(instances)
     index=1;
     for instance in instances:
@@ -29,6 +28,7 @@ def main():
             sshThru.exceptionEasterEgg()
             print("I failed you. (Invalid option)")
     instanceIp = instances[userSelection]['PrivateIpAddress']
-    connectString  = sshThru.proxySSHcommand % (sshThru.keyfile,instanceIp,sshThru.keyfile,sshThru.bastionIp)
+    username = sys.argv[1]
+    connectString  = sshThru.proxySSHcommand % (username,sshThru.keyfile,instanceIp,sshThru.keyfile,username,sshThru.bastionIp)
     process = subprocess.call(connectString, shell=True)
 

@@ -13,7 +13,7 @@ class SshThru:
         home = expanduser("~")
         self.configFile=home+"/."+file
         self.loadConfigs()
-        self.proxySSHcommand = "ssh -o StrictHostKeyChecking=no -l jjoice -i  %s %s -o ProxyCommand=\"ssh -o StrictHostKeyChecking=no -i %s -W %%h:%%p jjoice@%s\""
+        self.proxySSHcommand = "ssh -o StrictHostKeyChecking=no -l %s -i  %s %s -o ProxyCommand=\"ssh -o StrictHostKeyChecking=no -i %s -W %%h:%%p %s@%s\""
 
 
     def loadConfigs(self):

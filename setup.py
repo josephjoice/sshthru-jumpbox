@@ -6,5 +6,6 @@ setup(
     author="Joseph Joice",
     author_email="joseph_joice@intuit.com",
     description="AWS ssh through bastion",
-    packages=['sshthru']
+    packages=['sshthru'],
+    scripts=['bin/sshthru']
 )

@@ -6,12 +6,11 @@ import getpass
 def main():
     file = sys.argv[3]
     sshThru = SshThru(file)
-    instances = sshThru.getMatchingASGInstances(sys.argv[2]) 
-    instances = sshThru.getInstanceIP(instances)
+    instances = sshThru.search(sys.argv[2]) 
     index=1;
     for instance in instances:
         try:
-            print(str(index)+" "+instance['PrivateIpAddress']+" "+instance['State']['Name']+" "+str(instance['LaunchTime']))
+            print(str(index)+" "+instance[0]+" "+instance[1]+" "+str(instance[2]))
             index =  index+1
         except:
             print "",
@@ -27,8 +26,10 @@ def main():
         except Exception as e:
             sshThru.exceptionEasterEgg()
             print("I failed you. (Invalid option)")
-    instanceIp = instances[userSelection]['PrivateIpAddress']
+    instanceIp = instances[userSelection][1]
     username = sys.argv[1]
     connectString  = sshThru.proxySSHcommand % (username,sshThru.keyfile,instanceIp,sshThru.keyfile,username,sshThru.bastionIp)
     process = subprocess.call(connectString, shell=True)
 
+if __name__ == "__main__":
+    main()

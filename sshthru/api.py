@@ -5,6 +5,7 @@ import sys
 import subprocess
 import configparser
 import os
+import threading
 from os.path import expanduser
 
 class SshThru:
@@ -45,33 +46,56 @@ class SshThru:
 
     def getBastionIp(self):
         print("Getting bastion")
-        instances = self.getMatchingASGInstances("bastion")
-        instances = self.getInstanceIP(instances)
-        return instances[0]["PublicIpAddress"]
+        instanceIp = self.getPublicIpFromName("bastion")
+        return instanceIp
 
-        
 
-    def getMatchingASGInstances(self,str):
-        client = boto3.client('autoscaling')
-        response = client.describe_auto_scaling_groups()
-        autoscalingGroups = response['AutoScalingGroups']
-        instanceList = list()
-        for asg in autoscalingGroups:
-            if str in asg['AutoScalingGroupName']:
-                for instance in asg['Instances']:
-                    instanceList.append(instance['InstanceId'])
+    def get_filter(self,name,value):
+        return {
+            'Name': '%s' % name,
+            'Values': ['%s' % value]
+        }
+
+    def getmatchingInstancesFromName(self,str):
+        client = boto3.client('ec2')
+        filter = self.get_filter("tag:Name","*"+str+"*")
+        response = client.describe_instances(Filters =[ filter ])
+        instanceList = []
+        for reservation in response['Reservations']:
+            for instance in reservation['Instances']:
+                instanceList.append((self.getNameFromTags(instance['Tags']),instance['PrivateIpAddress'],instance['LaunchTime']))
         return instanceList
+       
+    def getPublicIpFromName(self,str):
+        client = boto3.client('ec2')
+        filter = self.get_filter("tag:Name","*"+str+"*")
+        response = client.describe_instances(Filters =[ filter ])
+        instanceList = []
+        return response['Reservations'][0]['Instances'][0]['PublicIpAddress']
+ 
     
     def getInstanceIP(self,instances):
         client = boto3.client('ec2')
         response = client.describe_instances(InstanceIds=instances)
         instanceList = []
         for reservation in response['Reservations']:
-            instanceList.extend(reservation['Instances'])
+            for instance in reservation['Instances']:
+                instanceList.append(instance['PrivateIpAddress'])
         return instanceList
     
     def exceptionEasterEgg(self):
         process = subprocess.Popen("open http://i.imgur.com/UnAOggP.gif", shell=True, stdout=subprocess.PIPE)
-    
-    
-  
+
+    def search(self,str):
+        instances = []
+        instances.extend(self.getmatchingInstancesFromName(str))
+        return instances
+
+    def getNameFromTags(self,tags):
+        for tag in tags:
+            if tag['Key'] == 'Name':
+                return tag['Value']
+        
+        
+
+

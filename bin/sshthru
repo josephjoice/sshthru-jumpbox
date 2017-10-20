@@ -5,6 +5,5 @@ import sshthru.clidriver as clidriver
 def main():
     return clidriver.main()
 
-
 if __name__ == '__main__':
   sys.exit(main())

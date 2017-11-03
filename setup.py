@@ -7,5 +7,11 @@ setup(
     author_email="joseph_joice@intuit.com",
     description="AWS ssh through bastion",
     packages=['sshthru'],
-    scripts=['bin/sshthru']
+    scripts=['bin/sshthru'],
+    install_requires=[
+        'boto3',
+        'bson',
+        'click',
+        'configparser'
+      ]
 )

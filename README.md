@@ -49,3 +49,6 @@ Reading configs from /Users/jjoice/.sshthru
 ********************************************************************************
 This is a private computer system containing information that is proprietary
 ```
+![demo](https://github.intuit.com/jjoice/sshthru/blob/master/images/sshthru.gif)
+
+

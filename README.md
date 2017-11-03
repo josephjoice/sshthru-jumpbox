@@ -10,6 +10,20 @@ or
 
 `pip install git+https://github.intuit.com/jjoice/sshthru.git`
 
+**Requirements**
+
+This program expects your aws credentials in the ~/.aws/credentials file in the following format
+
+```
+[auth-preprod]
+aws_access_key_id = AKIAJ5XXXXXXXXXXXXX
+aws_secret_access_key = XXXXXXXXXXXXXXXXXXXXXXXXXX
+region=us-west-2
+[ttcom-preprod]
+aws_access_key_id = XXXXXXXXXXXXXXXXXXXX
+aws_secret_access_key = XXXXXXXXXXXXXXXXXXXXXXXXXXX
+```
+
 **Usage**
 
 You can use the script to login to an instance  by giving some unique portion of the instance name.

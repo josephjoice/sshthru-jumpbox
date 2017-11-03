@@ -4,31 +4,34 @@ A dumb script which simply generates a ssh-proxy command string, which is common
 
 **Installation**
 
-```python setup.py install```
+`git clone` and `python setup.py install`
+
+or
+
+`pip install git+https://github.intuit.com/jjoice/sshthru.git`
 
 **Usage**
 
-You can use the script to login to an instance in any autoscaling group by giving some uniquely identifiable portion of that ASG name.
+You can use the script to login to an instance  by giving some unique portion of the instance name.
 First time when the script is run, a config file is created `~/.<profile-name>` which will have the key and bastion ip. If the file is not found the key file location will be requested again.
-The bastion Ip is found out looking for a ASG which has `bastion` in its name. You can manually update it in the config file as well.
-
+The bastion Ip is found out looking for an instance which has `bastion` in its name. You can manually update it in the config file as well.
 
 
 ```
-sshthru <username> <unique-string-in-asg-name> <aws-profile-to-use>
-$ sshthru ec2-user dev auth-preprod
-Enter the location of key file :   ~/Downloads/cms-authoring-key1\ \(1\).pem
+sshthru -u <username> -s <unique-string-in-asg-name> -a <aws-profile-to-use>
+$ sshthru -u jjoice -a auth-preprod -s cdev
+Enter the location of key file :   ~/Downloads/cms-authoring-key.pem
 Getting bastion
-1 10.131.152.158 running 2017-06-27 14:43:39+00:00
-OpenSSH_7.4p1, LibreSSL 2.5.0
-debug1: Reading configuration data /Users/jjoice/.ssh/config
-debug1: Reading configuration data /etc/ssh/ssh_config
+1 wp-authoring-cdev-web-app-deploy-20171026-031237 10.131.153.89 2017-10-30 10:30:24+00:00
+********************************************************************************
+This is a private computer system containing information that is proprietary
 ....
 ```
 
 ```
-$ sshthru ec2-user cdev auth-preprod
+$ sshthru -u jjoice -a auth-preprod -s perf
 Reading configs from /Users/jjoice/.sshthru
-1 10.131.153.20 running 2017-06-21 21:01:39+00:00
-OpenSSH_7.4p1, LibreSSL 2.5.0
+1 wp-authoring-perf-web-app-deploy-20171026-031237 10.131.153.82 2017-10-30 10:30:24+00:00
+********************************************************************************
+This is a private computer system containing information that is proprietary
 ```

@@ -63,7 +63,10 @@ class SshThru:
         instanceList = []
         for reservation in response['Reservations']:
             for instance in reservation['Instances']:
-                instanceList.append((self.getNameFromTags(instance['Tags']),instance['PrivateIpAddress'],instance['LaunchTime']))
+                try:
+                    instanceList.append((self.getNameFromTags(instance['Tags']),instance['PrivateIpAddress'],instance['LaunchTime']))
+                except:
+                    pass
         return instanceList
        
     def getPublicIpFromName(self,str):
